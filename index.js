@@ -1,3 +1,7 @@
+const os = require("child_process")
+os.exec("node -v", function( e1,stdout,e2){console.log(stdout);});
+return
+
 const http = require(`http`);
 const api = require('./Back/api.js')
 

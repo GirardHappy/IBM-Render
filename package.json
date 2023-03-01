@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/GirardHappy/IBM-HerokuDyno/issues"
   },
-  "homepage": "https://github.com/GirardHappy/IBM-HerokuDyno#readme"
+  "homepage": "https://github.com/GirardHappy/IBM-HerokuDyno#readme",
+  "dependencies": {
+    "node-fetch": "^3.3.0"
+  }
 }
