@@ -72,7 +72,7 @@ function latestHandle(obj, res){
 function api(res,obj){
     
 
-    if(Object.keys(sasso).includes(obj.query)){
+    try{
         let og = {
             "info": [Queries.info,{id: titleToId(obj.title)},infoHandle],
             "recommendations": [Queries.recommendations,{id: titleToId(obj.title)},recommendationsHandle],
@@ -83,7 +83,7 @@ function api(res,obj){
         }[obj.query]
         feccia.request(og[0],og[1],og[2],res)
     }
-    else{
+    catch{
         res.writeHead(400)
         res.write('Bad query')
         res.end()
