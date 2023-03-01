@@ -4,6 +4,7 @@ const  info = `
         Media(id: $id, type: ANIME) {
             title{
                 english
+                romaji
             }
             description
             format
@@ -20,11 +21,12 @@ const  info = `
 const recommendations = `
     query ($id: Int) {
         Media(id: $id, type: ANIME) {
-            recommendations(perPage: 3){
+            recommendations(perPage: 6){
                 nodes{
                     mediaRecommendation{
                         title{
                             english
+                            romaji
                         }
                     }
                 }
@@ -41,6 +43,7 @@ const trending = `
             media(sort:TRENDING_DESC,type:ANIME){
                 title{
                     english
+                    romaji
                 }
             }
         }
@@ -54,6 +57,7 @@ const genreTrending = `
             media(sort:POPULARITY_DESC,type:ANIME, genre: $genre){
                 title{
                     english
+                    romaji
                 }
             }
         }
@@ -64,24 +68,23 @@ const genreTrending = `
 const latest =  `
     query ($season: MediaSeason, $year: Int)
     {
-        Page(page: 1, perPage: 5) {
-            pageInfo {
-                hasNextPage
-                total
-            }
+        Page(page: 1, perPage: 6) {
             media(season: $season, seasonYear: $year, type: ANIME, format: TV sort: POPULARITY_DESC) {
                 title {
                     english
+                    romaji
                 }
-
-                airingSchedule(notYetAired: true, perPage: 2)
-                {
-                    nodes {
-                        episode
+                
+                airingSchedule(perPage: 1, notYetAired: true){
+                    nodes{
                         airingAt
                     }
+                    
                 }
-
+                startDate{
+                    month
+                    year
+                }
             }
         }
     }
