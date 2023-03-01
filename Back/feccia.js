@@ -1,4 +1,4 @@
-const http = require('http')
+const fetch = require('cross-fetch')
 
 function request(query,variables,callback,res){
     //costruzione richiesta
@@ -25,11 +25,13 @@ function request(query,variables,callback,res){
         });
     }
     function handleData(data) {
-        console.log(data)
+        res.writeHead(200,{"Content-Type": "application/json"})
         callback(data,res)
     }
     function handleError(error) {
-        console.error(error);
+        res.writeHead(400)
+        res.write('Bad fetch')
+        res.end()
     }
 }
 

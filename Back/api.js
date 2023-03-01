@@ -1,4 +1,3 @@
-const http = require('http')
 const fs = require('fs');
 const feccia = require('./feccia.js')
 const Queries = require('./Queries.js')
@@ -52,7 +51,7 @@ function trendingHandle(obj, res){
     goodEnding(data,res)
 }
 
-function genreTrendingHandele(obj, res){
+function genreTrendingHandle(obj, res){
 
 
 
@@ -68,18 +67,26 @@ function latestHandle(obj, res){
     goodEnding(data,res)
 }
 
-function api(res,obj){
-    res.writeHead(200,{"Content-Type": "application/json"})
-    switch(obj.query){
-        case "info": feccia.request(Queries.info,{id: titleToId(obj.title)},infoHandle,res); break;
-        case "recommendations": feccia.request(Queries.recommendations,{id: titleToId(obj.title)},recommendationsHandle,res); break;
-        case "trending": feccia.request(Queries.trending,{},trendingHandle,res); break;
-        case "genreTrending": feccia.request(Queries.genreTrending,{genre: obj.genre},trendingHandle,res); break;
-        case "latest": feccia.request(Queries.latest,seasonAndYear(),latestHandle,res); break;
-    }
+const sasso = {
+    "info": [Queries.info,{id: titleToId(obj.title)},infoHandle],
+    "recommendations": [Queries.recommendations,{id: titleToId(obj.title)},recommendationsHandle],
+    "trending": [Queries.trending,{},trendingHandle],
+    "genreTrending": [Queries.genreTrending,{genre: obj.genre},genreTrendingHandle],
+    "latest": [Queries.latest,seasonAndYear(),latestHandle]
+
 }
 
-
+function api(res,obj){
+    if(Object.keys(sasso).includes(obj.query)){
+        let og = sasso[obj.query]
+        feccia.request(og[0],og[1],og[2],res)
+    }
+    else{
+        res.writeHead(400)
+        res.write('Bad query')
+        res.end()
+    }
+}
 
 module.exports = {
     api: api,
