@@ -67,18 +67,20 @@ function latestHandle(obj, res){
     goodEnding(data,res)
 }
 
-const sasso = {
-    "info": [Queries.info,{id: titleToId(obj.title)},infoHandle],
-    "recommendations": [Queries.recommendations,{id: titleToId(obj.title)},recommendationsHandle],
-    "trending": [Queries.trending,{},trendingHandle],
-    "genreTrending": [Queries.genreTrending,{genre: obj.genre},genreTrendingHandle],
-    "latest": [Queries.latest,seasonAndYear(),latestHandle]
 
-}
 
 function api(res,obj){
+    
+
     if(Object.keys(sasso).includes(obj.query)){
-        let og = sasso[obj.query]
+        let og = {
+            "info": [Queries.info,{id: titleToId(obj.title)},infoHandle],
+            "recommendations": [Queries.recommendations,{id: titleToId(obj.title)},recommendationsHandle],
+            "trending": [Queries.trending,{},trendingHandle],
+            "genreTrending": [Queries.genreTrending,{genre: obj.genre},genreTrendingHandle],
+            "latest": [Queries.latest,seasonAndYear(),latestHandle]
+        
+        }[obj.query]
         feccia.request(og[0],og[1],og[2],res)
     }
     else{
