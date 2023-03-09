@@ -12,7 +12,7 @@ function recivePOST(req, res){
     });
     
     req.on('end', function () {
-        console.log(body)
+        console.log("--Request: "+body)
         api.api(res,JSON.parse(body))
     });
 }

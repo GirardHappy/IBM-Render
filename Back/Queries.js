@@ -6,6 +6,9 @@ const  info = `
                 english
                 romaji
             }
+            coverImage{
+                large
+            }
             description
             format
             status
@@ -15,6 +18,17 @@ const  info = `
             averageScore
         }
   }
+`;
+
+const trailer = `
+query ($id: Int) {
+    Media(id: $id, type: ANIME) {
+        trailer{
+            id
+            site
+        }
+    }
+}
 `;
 
 //titolo e poi io id
@@ -95,5 +109,6 @@ module.exports = {
     recommendations: recommendations,
     trending: trending,
     genreTrending: genreTrending,
-    latest: latest
+    latest: latest,
+    trailer: trailer
 }

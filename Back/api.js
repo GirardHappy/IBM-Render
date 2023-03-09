@@ -15,7 +15,7 @@ function titleToId(title){
 }
 
 function goodEnding(data,res){
-    console.log(JSON.stringify(data))
+    console.log("--Response: "+JSON.stringify(data))
     res.write(JSON.stringify(data))
     res.end()
 }
@@ -31,7 +31,18 @@ function infoHandle(obj, res){
         duration: media.duration,
         genres: media.genres,
         averageScore: media.averageScore,
+        coverImage: media.coverImage.large
 
+    }
+    goodEnding(data,res)
+}
+
+function trailerHandle(obj, res){
+    let trailer = obj.data.Media.trailer
+    let exist = !(obj.data.Media.trailer==null)
+    let data = {
+        exist: exist,
+        url: exist?((trailer.site=='youtube'?"https://www.youtube.com/watch?v=":"https://www.dailymotion.com/video/")+trailer.id):null
     }
     goodEnding(data,res)
 }
@@ -111,7 +122,8 @@ function api(res,obj){
             "recommendations": [Queries.recommendations,{id: titleToId(obj.title)},recommendationsHandle],
             "trending": [Queries.trending,{},trendingHandle],
             "genreTrending": [Queries.genreTrending,{genre: obj.genre},trendingHandle],
-            "latest": [Queries.latest,seasonAndYear(),latestHandle]
+            "latest": [Queries.latest,seasonAndYear(),latestHandle],
+            "trailer": [Queries.trailer,{id: titleToId(obj.title)},trailerHandle]
         
         }[obj.query]
         feccia.request(og[0],og[1],og[2],res)
