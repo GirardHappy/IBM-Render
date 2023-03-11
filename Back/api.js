@@ -113,10 +113,26 @@ function latestHandle(obj, res){
     goodEnding(data,res)
 }
 
+function shutdown(res){
+    goodEnding({response:'shutdown in progress'},res);
+    process.exit()    
+}
+
 
 
 function api(res,obj){
+    if(Object.keys(obj).includes('command')){
+        res.writeHead(200,{"Content-Type": "application/json"})
+        switch(obj.command){
+            case 'ping': goodEnding({response:'pong'},res); break;
+            case 'shutdown': shutdown(res); break;
+            default: res.writeHead(400, 'Bad command');res.end();
+        }
+        return
+    }
+
     try{
+        
         let og = {
             "info": [Queries.info,{id: titleToId(obj.title)},infoHandle],
             "recommendations": [Queries.recommendations,{id: titleToId(obj.title)},recommendationsHandle],
@@ -137,4 +153,4 @@ function api(res,obj){
 
 module.exports = {
     api: api,
-  }
+}
